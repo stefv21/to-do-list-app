@@ -1,28 +1,39 @@
-function newItem() {
-    let inputValue = $('#input').val().trim(); // Trim whitespace
-
-    if (inputValue === '') {
-        alert("You must write something!");
-    } else {
-        // Create the list item and button with jQuery
-        let li = $('<li></li>').text(inputValue);
-        let deleteButton = $('<button class="crossOutButton"></button>').text('X');
+    function newItem(){
         
-        // Append the button to the list item
-        li.append(deleteButton);
 
-        // Append the list item to the list
-        $('#list').append(li);
-        
-        // Clear the input field after adding
-        $('#input').val('');
+            let li = $('<li></li>');
+            let inputValue = $('#input').val();
+            li.append(inputValue);
 
-        // Make the list sortable
-        $('#list').sortable();
+            if (inputValue === '') {
+                alert("You must write something!");
+            } else {
+                $('#list').append(li);
+            }
 
-        // Event handler to remove the item
-        deleteButton.on("click", function() {
-            li.remove(); // Remove the list item when the button is clicked
-        });
-    }
-}
+            function crossOut() {
+                li.toggleClass("strike");
+            }
+            
+            li.on("dblclick", function crossOut() {
+                li.toggleClass("strike");
+            });
+
+            let crossOutButton = $('<crossOutButton></crossOutButton>');
+            crossOutButton.append(document.createTextNode('X'));
+            li.append(crossOutButton);
+    
+            crossOutButton.on("click", deleteListItem); 
+            function deleteListItem (){
+            li.addClass("delete");
+            }
+
+            $('#list').sortable();
+
+            $('#input').on('keypress', function(event) {
+                if (event.which === 13) {
+                  event.preventDefault(); 
+                  newItem(); 
+                }
+              });
+            }
